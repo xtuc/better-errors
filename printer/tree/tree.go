@@ -1,9 +1,13 @@
-package flat
+package tree
 
 import (
 	"fmt"
 
 	be "github.com/xtuc/better-errors"
+)
+
+const (
+	PADDING = "  "
 )
 
 func PrintChain(root *be.Chain) string {
@@ -18,7 +22,7 @@ func printChain(node *be.Chain, depth int) string {
 
 	for k, v := range node.Context {
 		buff += "\n"
-		buff += fmt.Sprintf("{%s: %s}", k, v)
+		buff += fmt.Sprintf("%s├ %s: %s", getPadding(depth), k, v)
 	}
 
 	if node.Next != nil {
@@ -29,5 +33,15 @@ func printChain(node *be.Chain, depth int) string {
 }
 
 func chain(depth int, parent, child string) string {
-	return fmt.Sprintf("%s: %s", parent, child)
+	padding := getPadding(depth)
+
+	return fmt.Sprintf("%s\n%s└ %s", parent, padding, child)
+}
+
+func getPadding(mx int) (s string) {
+	for i := 0; i < mx; i++ {
+		s += PADDING
+	}
+
+	return s
 }

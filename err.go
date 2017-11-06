@@ -7,6 +7,9 @@ func NewFromString(str string) *Chain {
 }
 
 func NewFromErr(err error) *Chain {
+	if IsBetterError(err) {
+		panic("Assert error: argument must be an instance of error, bettererrors.Chain given")
+	}
 
 	return &Chain{
 		Context: make(Context),

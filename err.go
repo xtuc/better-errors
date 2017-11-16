@@ -20,7 +20,15 @@ func NewFromErr(err error) *Chain {
 }
 
 // Merge both chains
-func (chain *Chain) With(errChain *Chain) *Chain {
+func (chain *Chain) With(err error) *Chain {
+	var errChain *Chain
+
+	if IsBetterError(err) {
+		errChain = err.(*Chain)
+	} else {
+		errChain = NewFromErr(err)
+	}
+
 	newChain := chain
 	newChain.Next = errChain
 

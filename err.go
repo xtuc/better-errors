@@ -1,16 +1,17 @@
+/*
+  Better error visualization for client-side applications
+*/
 package bettererrors
 
 import "errors"
 
-func NewFromString(str string) *Chain {
+// Create a new chain with the given error message
+func New(str string) *Chain {
 	return NewFromErr(errors.New(str))
 }
 
+// Convert an error into a chain element
 func NewFromErr(err error) *Chain {
-	if IsBetterError(err) {
-		panic("Assert error: argument must be an instance of error, bettererrors.Chain given")
-	}
-
 	return &Chain{
 		Context: make(Context),
 		Value:   err,
@@ -18,26 +19,27 @@ func NewFromErr(err error) *Chain {
 	}
 }
 
-func (chain *Chain) With(err error) *Chain {
-	if errChain, isErrChain := err.(*Chain); isErrChain {
-		newChain := chain
-		newChain.Next = errChain
+// Merge both chains
+func (chain *Chain) With(errChain *Chain) *Chain {
+	newChain := chain
+	newChain.Next = errChain
 
-		return newChain
-	} else {
-		panic("Assert error: err must be an instance of bettererrors.Chain")
-	}
+	return newChain
 }
 
+// Set context on the first element of the chain
 func (chain *Chain) SetContext(key, value string) *Chain {
 	chain.Context[key] = value
 	return chain
 }
 
+// Convert error to string. Mainly used implicitly and provides the error interface.
 func (chain *Chain) Error() string {
-	return "NOT IMPLEMENTED"
+	// TODO(sven): use the flat printer here
+	return chain.Value.Error()
 }
 
+// Check if the error is a chain
 func IsBetterError(err error) bool {
 	_, isBetterError := err.(*Chain)
 

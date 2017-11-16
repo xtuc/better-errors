@@ -11,7 +11,7 @@ import (
 func TestPrintChainWithContext(t *testing.T) {
 	err1 := errors.New("bar")
 	err := bettererrors.
-		NewFromString("foo").
+		New("foo").
 		SetContext("a", "b").
 		With(bettererrors.NewFromErr(err1))
 

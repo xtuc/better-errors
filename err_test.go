@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewFromString(t *testing.T) {
-	chain := NewFromString("test")
+func TestNew(t *testing.T) {
+	chain := New("test")
 
 	assert.IsType(t, chain, &Chain{})
 	assert.Equal(t, "test", chain.Value.Error())
@@ -24,5 +24,5 @@ func TestNewFromErr(t *testing.T) {
 
 func TestIsBetterError(t *testing.T) {
 	assert.False(t, IsBetterError(errors.New("test")))
-	assert.True(t, IsBetterError(NewFromString("test")))
+	assert.True(t, IsBetterError(New("test")))
 }
